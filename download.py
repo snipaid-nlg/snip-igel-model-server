@@ -14,8 +14,7 @@ def download_model():
     model = AutoModelForCausalLM.from_pretrained(
         "malteos/bloom-6b4-clp-german",
         torch_dtype=torch.float16,
-        load_in_8bit=True,
-        device_map='auto'
+        map_location=torch.device('cpu')
     )
     print("done")
     
