@@ -13,8 +13,6 @@ def download_model():
     print("downloading model checkpoint...")
     model = AutoModelForCausalLM.from_pretrained(
         "malteos/bloom-6b4-clp-german",
-        torch_dtype=torch.float16,
-        map_location=torch.device('cpu')
     )
     print("done")
     
