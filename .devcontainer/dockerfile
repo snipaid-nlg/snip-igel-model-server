@@ -1,0 +1,10 @@
+FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-devel
+
+RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/conda/lib/libcudart.so' >> ~/.bashrc 
+
+RUN /opt/conda/bin/pip install bitsandbytes
+RUN /opt/conda/bin/pip install transformers
+RUN /opt/conda/bin/pip install accelerate
+
+# Install git
+RUN apt-get update && apt-get install -y git

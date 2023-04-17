@@ -1,0 +1,5 @@
+sanic==22.6.2
+transformers
+bitsandbytes
+accelerate
+peft
