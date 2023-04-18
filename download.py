@@ -3,8 +3,6 @@
 
 # In this example: our gpt-j-6B model finetuned for title and teaser generation
 
-import torch 
-
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
