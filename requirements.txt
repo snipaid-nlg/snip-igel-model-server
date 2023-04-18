@@ -1,4 +1,5 @@
 sanic==22.6.2
+websockets==10.0
 transformers
 bitsandbytes
 accelerate
