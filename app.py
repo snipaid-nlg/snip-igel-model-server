@@ -3,7 +3,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 import torch
 
-device = "cuda:0" if torch.cuda.is_available() else "cpu"
+#device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 # Init is ran on server startup
 # Load your model to GPU as a global variable here.
@@ -12,7 +12,7 @@ def init():
     global tokenizer
 
     # load model
-    print("loading base model to CPU...")
+    print("loading base model...")
     model = AutoModelForCausalLM.from_pretrained(
         "malteos/bloom-6b4-clp-german",
         torch_dtype=torch.float16,
@@ -21,11 +21,11 @@ def init():
     )
     print("done")
 
-    # conditionally load model to GPU
+    """# conditionally load model to GPU
     if device == "cuda:0":
         print("loading model to GPU...")
         model.cuda()
-        print("done")
+        print("done")"""
     
     # load LoRA adapters finetuned for news snippet generation
     print("downloading adapter checkpoint")
