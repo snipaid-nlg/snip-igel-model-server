@@ -3,8 +3,6 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, 
 
 import torch
 
-#device = "cuda:0" if torch.cuda.is_available() else "cpu"
-
 # Init is ran on server startup
 # Load your model to GPU as a global variable here.
 def init():
@@ -20,12 +18,6 @@ def init():
         device_map='auto'
     )
     print("done")
-
-    """# conditionally load model to GPU
-    if device == "cuda:0":
-        print("loading model to GPU...")
-        model.cuda()
-        print("done")"""
     
     # load LoRA adapters finetuned for news snippet generation
     print("downloading adapter checkpoint")
