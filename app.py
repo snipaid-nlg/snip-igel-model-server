@@ -1,5 +1,5 @@
 from peft import PeftModel
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
 
 import torch
 
@@ -63,15 +63,57 @@ def inference(model_inputs:dict) -> dict:
     if params == None:
         params = {}
 
-    # Initialize pipeline
-    gen_pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, device=0, **params)
+    # Config
+    generation_config = GenerationConfig(
+        top_p=0.9,
+        top_k=0,
+        temperature=1,
+        do_sample=True,
+        early_stopping=True,
+        length_penalty=1,
+        eos_token_id=tokenizer.eos_token_id,
+        pad_token_id=tokenizer.eos_token_id,
+        **params
+    )
 
-    # Run generation pipline
-    output = gen_pipe(f"{task_prefix} {document} {prompt}")
+    # Assemble prompt
+    prompt = generate_prompt(prompt, document)
 
-    # Get output text
-    output_text = output[0]['generated_text'].split(prompt)[1].split("</s>")[0]
+    # Embed prompt
+    inputs = tokenizer(prompt, return_tensors="pt")
+    input_ids = inputs["input_ids"].cuda()
 
-    # Return the results as a dictionary
-    result = {"output": output_text}
-    return result
+    # Generate
+    generation_output = model.generate(
+        input_ids=input_ids,
+        generation_config=generation_config,
+        return_dict_in_generate=True,
+        output_scores=True
+    )
+
+    # Decode and return the result as a dictionary
+    for s in generation_output.sequences:
+        output = tokenizer.decode(s)
+        output_text = output.split("### Antwort:")[1].strip()
+        result = {"output": output_text}
+        return result
+
+def generate_prompt(instruction, input=None) -> str:
+    if input:
+        return f"""Nachfolgend finden Sie eine Anweisung, die eine Aufgabe beschreibt, und eine Eingabe, die weiteren Kontext liefert. Schreiben Sie eine Antwort, die die Aufgabe angemessen erfüllt.
+
+### Anweisung:
+{instruction}
+
+### Eingabe:
+{input}
+
+### Antwort:"""
+    else:
+        return f"""Nachfolgend finden Sie eine Anweisung, die eine Aufgabe beschreibt. Schreiben Sie eine Antwort, die die Aufgabe angemessen erfüllt.
+
+### Anweisung:
+{instruction}
+
+### Antwort:"""
+
