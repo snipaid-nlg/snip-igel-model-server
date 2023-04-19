@@ -16,7 +16,7 @@ def download_model():
     
     # load LoRA adapters finetuned for news snippet generation
     print("downloading adapter checkpoint")
-    PeftModel.from_pretrained(model, "snipaid/snip-igel-500")
+    PeftModel.from_pretrained(model, "snipaid/snip-igel-500-v2")
     print("done")
 
     # load tokenizer
