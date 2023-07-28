@@ -1,8 +1,11 @@
-
 # Snip-IGEL Model Server
 
 This repo provides the code for serving the instruction finetuned IGEL model for german snippet generation in production.
 It can be used to spin up a simple HTTP server, that handles snippet generation.
+
+> _**NOTE:** There is an even faster server for this model, built with the Potassium framework. Please use the Potassium Server for optimal performance._
+> 
+> [![GitHub](https://badgen.net/badge/icon/snip-igel%20potassium%20model%20server/orange?icon=github&label)](https://github.com/snipaid-nlg/snip-igel-model-server-v2)
 
 ## Quickstart:
 
